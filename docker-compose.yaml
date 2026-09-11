@@ -1,0 +1,46 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_catalogolivros
+    restart: unless-stopped
+    environment:
+    # Senhas e usuários para subir o mysql no .env (seguir o modelo do .env.example para mudar nome, senha, etc)
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "${MYSQL_PORT:-3306}:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./src/database:/docker-entrypoint-initdb.d:z # Quando iniciado pela primeira vez as tabelas e valores são inseridos no banco de dados
+    healthcheck:
+    # Docker tenta se comunicar com o mysql para entender se a aplicação está rodando conforme previsto
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p$${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 60s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: app_catalogolivros
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - DB_HOST=mysql
+      - DB_PORT=3306
+      - DB_DATABASE=${MYSQL_DATABASE}
+      - DB_USER=${MYSQL_USER}
+      - DB_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - .:/var/www/html:z
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+volumes:
+  mysql_data:
