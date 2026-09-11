@@ -170,6 +170,35 @@ class Livro
     }
 
     /**
+     * Verifica se já existe um livro com o mesmo título e autor
+     *
+     * @param string $titulo
+     * @param string $autor
+     * @param int|null $excludeId ID a ser excluído da verificação (útil no update)
+     * @return bool
+     */
+    public static function existsByTituloAndAutor(string $titulo, string $autor, ?int $excludeId = null): bool
+    {
+        $pdo = Database::getConnection();
+
+        $sql = 'SELECT COUNT(*) FROM livros WHERE LOWER(titulo) = LOWER(:titulo) AND LOWER(autor) = LOWER(:autor)';
+        $params = [
+            'titulo' => trim($titulo),
+            'autor'  => trim($autor),
+        ];
+
+        if ($excludeId !== null) {
+            $sql .= ' AND livro_id != :exclude_id';
+            $params['exclude_id'] = $excludeId;
+        }
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
+
+        return (int) $stmt->fetchColumn() > 0;
+    }
+
+    /**
      * Remove um livro pelo ID
      */
     public static function delete(int $id): bool

@@ -91,7 +91,7 @@ class LivroController
             return;
         }
 
-        $errors = LivroValidator::validateUpdate($body);
+        $errors = LivroValidator::validateUpdate($body, $id);
 
         if (!empty($errors)) {
             $this->json([

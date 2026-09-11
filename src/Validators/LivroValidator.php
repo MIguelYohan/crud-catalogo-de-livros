@@ -3,6 +3,7 @@
 namespace App\Validators;
 
 use App\Models\Categoria;
+use App\Models\Livro;
 
 class LivroValidator
 {
@@ -51,6 +52,13 @@ class LivroValidator
             }
         }
 
+        // Validação de duplicidade (mesmo título e autor)
+        if (empty($errors['titulo']) && empty($errors['autor'])) {
+            if (Livro::existsByTituloAndAutor((string) $data['titulo'], (string) $data['autor'])) {
+                $errors['duplicado'][] = 'Já existe um livro com este título e autor cadastrado.';
+            }
+        }
+
         return $errors;
     }
 
@@ -58,9 +66,10 @@ class LivroValidator
      * Valida os dados para atualização de um livro (PUT)
      *
      * @param array $data
+     * @param int $excludeId ID do livro sendo atualizado (excluído da verificação de duplicidade)
      * @return array Lista de erros (vazio se válido)
      */
-    public static function validateUpdate(array $data): array
+    public static function validateUpdate(array $data, int $excludeId = 0): array
     {
         $errors = [];
 
@@ -107,6 +116,16 @@ class LivroValidator
             $statusVal = filter_var($data['status'], FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
             if ($statusVal === null) {
                 $errors['status'][] = 'O campo status deve ser um valor booleano (true ou false).';
+            }
+        }
+
+        // Validação de duplicidade (mesmo título e autor), ignorando o livro atual
+        if (
+            array_key_exists('titulo', $data) && array_key_exists('autor', $data)
+            && empty($errors['titulo']) && empty($errors['autor'])
+        ) {
+            if (Livro::existsByTituloAndAutor((string) $data['titulo'], (string) $data['autor'], $excludeId ?: null)) {
+                $errors['duplicado'][] = 'Já existe um livro com este título e autor cadastrado.';
             }
         }
 
