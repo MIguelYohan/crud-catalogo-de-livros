@@ -28,9 +28,6 @@ $router = new Router();
 $router->get('/', function () {
     header('Content-Type: application/json; charset=utf-8');
     echo json_encode([
-        'nome'      => 'API Catálogo de Livros',
-        'versao'    => '1.0.0',
-        'linguagem' => 'PHP Puro',
         'endpoints' => [
             'GET /livros'            => 'Lista todos os livros (suporta filtros: ?id=, ?categoria=, ?autor=, ?titulo=, ?status=)',
             'GET /livros?id=1'       => 'Retorna os detalhes de um livro específico',
