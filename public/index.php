@@ -12,6 +12,16 @@ use App\Routes\Router;
 // Carrega variáveis do .env
 Env::load(__DIR__ . '/../.env');
 
+// Permite front-end fazer requisições a API
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(204);
+    exit;
+}
+
 $router = new Router();
 
 // Rota raiz com documentação da API
