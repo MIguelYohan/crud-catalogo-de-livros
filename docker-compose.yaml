@@ -42,5 +42,17 @@ services:
       mysql:
         condition: service_healthy
 
+# Sobe o frontend junto com a api no docker compose
+  frontend:
+    image: python:3.11-alpine
+    container_name: frontend_catalogolivros
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    working_dir: /app/frontend
+    volumes:
+      - ./frontend:/app/frontend:z
+    command: python -m http.server 8080
+
 volumes:
   mysql_data:
