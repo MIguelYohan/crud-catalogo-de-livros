@@ -2,7 +2,7 @@
 CREATE TABLE IF NOT EXISTS categoria (
     categoria_id INT AUTO_INCREMENT PRIMARY KEY,
     nome_categoria VARCHAR(50) NOT NULL UNIQUE
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci; -- Evita erros de encoding
 
 -- Criação da tabela livros 
 CREATE TABLE IF NOT EXISTS livros (
@@ -14,9 +14,10 @@ CREATE TABLE IF NOT EXISTS livros (
     CONSTRAINT fk_livros_categoria
         FOREIGN KEY (categoria_id) REFERENCES categoria(categoria_id)
         ON DELETE SET NULL
-);
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- Inserção de valores padrão para as categorias possiveis para o livro
+SET NAMES utf8mb4;
 INSERT INTO categoria (nome_categoria) VALUES
     ('Ficção Científica'),
     ('Fantasia'),
