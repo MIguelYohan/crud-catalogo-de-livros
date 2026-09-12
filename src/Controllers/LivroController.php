@@ -23,8 +23,23 @@ class LivroController
 
         $this->json([
             'status' => 'sucesso',
-            'total' => count($livros),
-            'dados' => $livros,
+            'total'  => count($livros),
+            'dados'  => $livros,
+        ], 200);
+    }
+
+    /**
+     * GET /livros/ativos
+     * Lista apenas os livros com status ativo (true)
+     */
+    public function active(): void
+    {
+        $livros = Livro::findByStatus();
+
+        $this->json([
+            'status' => 'sucesso',
+            'total'  => count($livros),
+            'dados'  => $livros,
         ], 200);
     }
 

@@ -81,6 +81,36 @@ class Livro
         return array_map([self::class, 'formatRow'], $rows);
     }
 
+
+    /**
+     * Busca todos os livros ativos (status = true)
+     *
+     * @return array
+     */
+    public static function findByStatus(): array
+    {
+        $pdo = Database::getConnection();
+
+        $sql = 'SELECT
+                    l.livro_id,
+                    l.titulo,
+                    l.autor,
+                    l.categoria_id,
+                    c.nome_categoria,
+                    l.status
+                FROM livros l
+                LEFT JOIN categoria c ON l.categoria_id = c.categoria_id
+                WHERE l.status = 1
+                ORDER BY l.livro_id ASC';
+
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $rows = $stmt->fetchAll();
+
+        return array_map([self::class, 'formatRow'], $rows);
+    }
+
+
     /**
      * Busca um livro pelo seu ID
      */

@@ -22,6 +22,7 @@ $router->get('/', function () {
         'endpoints' => [
             'GET /livros'            => 'Lista todos os livros (suporta filtros: ?id=, ?categoria=, ?autor=, ?titulo=, ?status=)',
             'GET /livros?id=1'       => 'Retorna os detalhes de um livro específico',
+            'GET /livros/ativos'     => 'Lista apenas livros com status ativo',
             'POST /livros'           => 'Cadastra um novo livro (validação obrigatória no servidor)',
             'PUT /livros?id=1'       => 'Atualiza os dados de um livro existente',
             'DELETE /livros?id=1'    => 'Exclui um livro do catálogo',
@@ -32,6 +33,11 @@ $router->get('/', function () {
 });
 
 // CRUD de Livros
+$router->get('/livros/ativos', function () {
+    $controller = new LivroController();
+    $controller->active();
+});
+
 $router->get('/livros', function () {
     $controller = new LivroController();
     $controller->index($_GET);
