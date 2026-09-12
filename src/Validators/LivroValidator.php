@@ -1,5 +1,7 @@
 <?php
 
+// Validator responsável pelas validações do sistema por parte do backend
+
 namespace App\Validators;
 
 use App\Models\Categoria;

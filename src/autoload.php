@@ -1,6 +1,7 @@
 <?php
 
 // Carrega automaticamente os arquivos de classes e interfaces quando são referenciados no código
+// Tira a necessidade de fazer repetir require_once
 
 spl_autoload_register(function (string $class) {
     $prefix = 'App\\';

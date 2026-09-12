@@ -1,5 +1,8 @@
 <?php
 
+// Router é responsavel por direcionar uma requisição para um handler
+// As funções handlers estão todas implementadas no index.php 
+
 namespace App\Routes;
 
 class Router

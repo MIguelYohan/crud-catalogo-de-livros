@@ -1,5 +1,9 @@
 <?php
 
+// Models são responsáveis por funções que serão utilizadas pelos Controllers para fazer as buscas dos dados no banco de dados
+// Utilizei o PDO para fazer as queries e conexão com o banco
+// Dessa forma consigo modularizar melhor o sistema para condensar as queries em funções que serão reutilizadas depois
+
 namespace App\Models;
 
 use App\Config\Database;

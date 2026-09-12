@@ -1,5 +1,7 @@
 <?php
 
+// Controllers são responsáveis por utilizar os dados extraidos pelos models e retorna-los em formato JSON
+
 namespace App\Controllers;
 
 use App\Models\Categoria;

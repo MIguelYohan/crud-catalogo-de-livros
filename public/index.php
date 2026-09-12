@@ -1,5 +1,7 @@
 <?php
 
+// index.php implementa os endpoints da API controlando as requisições feitas
+
 require_once __DIR__ . '/../src/autoload.php';
 
 use App\Config\Env;
